@@ -1,0 +1,24 @@
+# Machine-readable entry for this repository. Aggregated into public-software/catalog.
+# Edit here; `pub catalog sync` propagates description, topics and custom properties to GitHub.
+
+[repo]
+name        = "interfaces"
+ring        = "spine"          # spine | platform | system | domain | standards
+layers      = ["all"]
+wave        = 1
+tier        = "incubating"        # incubating | stable | core | archived
+maintainers = ["maint-interfaces"]
+summary     = "Every cross-repo API as WIT packages and wire schemas, with generated binding crates."
+
+# One [[component]] per crate, app or service this workspace publishes.
+# planned: public:doc/* · ui/* · plugin/* · identity/* · store/* · media/* · net/*; pub-interfaces-* crates
+#
+# [[component]]
+# crate     = "pub-interfaces-example"
+# kind      = "lib"                # lib | app | service | plugin | spec
+# ledger    = "<ledger entry name>"
+# readiness = "none"               # shipped | partial | seed | none
+# effort    = 3
+# specs     = []
+# provides  = ["public:area/iface@1"]
+# requires  = []
