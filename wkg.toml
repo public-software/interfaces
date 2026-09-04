@@ -1,0 +1,8 @@
+# wkg's manifest for the WIT package under wit/ (RFC-0002). The metadata becomes the
+# org.opencontainers.image annotations of the published OCI artifact.
+[metadata]
+authors = "Public Software maintainers"
+description = "public:core, the contract every Public Software platform component binds: health, logging, config, clock"
+license = "Apache-2.0 OR MIT"
+homepage = "https://publicsoftware.dev"
+repository = "https://github.com/public-software/interfaces"

@@ -13,25 +13,41 @@ Planned components: public:doc/* · ui/* · plugin/* · identity/* · store/* ·
 
 ## In 30 seconds
 
-_A runnable example goes here the day the first crate lands._
+```sh
+wkg get public:core@0.1.0             # the package as a WIT file, from ghcr.io/public-software/public/core:0.1.0
+wkg wit fetch && wasm-tools component wit wit/  # in this checkout: the WASI packages it imports, then the resolved package
+```
+
+`public:core` is the contract every platform component binds. A host provides `logging`, `config` and `clock` (and `wasi:cli/environment`); a component exports `health`. The values of `clock` are the WASI 0.3.0 clock types, so they interoperate with `wasi:clocks`.
 
 ## What it does
 
+| Package | Interfaces | Worlds | WASI |
+|---|---|---|---|
+| `public:core@0.1.0` (`wit/`) | `health` (exported), `logging`, `config`, `clock` | `imports`, `component` | `wasi:cli@0.3.0`, `wasi:clocks@0.3.0` |
+
+Every item carries `@since(version = …)`, the release that added it. `wit.yml` fetches the WASI packages, parses the package with wasm-tools and builds it with wkg on every change; the tag `core-v<version>` publishes it to `ghcr.io/public-software/public/core:<version>` with a build provenance attestation. The rules, semver per package, the tag and the OCI reference, are [RFC-0002](https://github.com/public-software/rfcs/blob/main/text/0002-wit-package-versioning.md); `https://publicsoftware.dev/.well-known/wasm-pkg/registry.json` maps the `public` namespace so `wkg get` needs no configuration.
+
 ## What it does not do (yet)
+
+- The Rust bindings crate `pub-interfaces-core` (wit-bindgen), published at the package's major.minor.
+- The conformance file in `specs` that loads the package and calls `health` and `clock`.
+- The other packages the catalog entry names (`public:doc`, `ui`, `plugin`, `identity`, `store`, `media`, `net`); each gets its own directory under `wit/` and its own tag.
 
 ## Status
 
 | Ledger entry | Readiness | Next |
 |---|---|---|
+| `public:core` | seed | bindings crate, conformance file |
 
 ## How it fits the suite
 
-Implements: _none yet_ · Requires: _none yet_ (see `CATALOG.toml`)
+Implements: `public:core@0.1.0` · Requires: `wasi:cli@0.3.0`, `wasi:clocks@0.3.0` (see `CATALOG.toml`)
 
 ## Contributing
 
-`pub check` must pass. See the org-wide [CONTRIBUTING](https://github.com/public-software/.github/blob/main/CONTRIBUTING.md) and `PROVENANCE.md`.
+`pub check` must pass. See the org-wide [CONTRIBUTING](https://github.com/public-software/.github/blob/main/CONTRIBUTING.md) and `PROVENANCE.md`. A change to an interface is a change to a contract: it follows RFC-0002 (a minor release for an addition, a major one for anything else) and, when it crosses repositories, an RFC.
 
 ## Provenance
 
-See `PROVENANCE.md`.
+See `PROVENANCE.md`. `logging` follows the shape of `wasi:logging` and `config` that of `wasi:config` (both Apache-2.0 WITH LLVM-exception), read as designs and written here; the WASI 0.3.0 packages are imported by name, never copied.

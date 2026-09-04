@@ -1,0 +1,26 @@
+package public:core@0.1.0;
+
+/// Time, provided by the host. The values are the WASI 0.3.0 clock types, so
+/// they interoperate with `wasi:clocks`; the indirection exists so a host can
+/// back this clock with the real WASI clocks in production and with a clock a
+/// conformance test sets by hand. Components read time here, never from WASI
+/// directly.
+@since(version = 0.1.0)
+interface clock {
+    use wasi:clocks/types@0.3.0.{duration};
+    use wasi:clocks/system-clock@0.3.0.{instant};
+    use wasi:clocks/monotonic-clock@0.3.0.{mark};
+
+    /// The current time since the Unix epoch, as the host sees it.
+    @since(version = 0.1.0)
+    now: func() -> instant;
+
+    /// A monotonic mark for measuring elapsed time; the contract of
+    /// `wasi:clocks/monotonic-clock.now`.
+    @since(version = 0.1.0)
+    elapsed: func() -> mark;
+
+    /// Wait for `how-long`; a test clock may advance and return at once.
+    @since(version = 0.1.0)
+    sleep: async func(how-long: duration);
+}

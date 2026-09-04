@@ -1,0 +1,6 @@
+# Where public:* packages live (RFC-0002). wkg derives the OCI reference as
+# {registry}/{namespacePrefix}{namespace}/{name}:{version}, so public:core@0.1.0 is
+# ghcr.io/public-software/public/core:0.1.0. CI passes this file to `wkg publish`; a consumer
+# needs nothing, because https://publicsoftware.dev/.well-known/wasm-pkg/registry.json says the same.
+[namespace_registries]
+public = { registry = "publicsoftware.dev", metadata = { preferredProtocol = "oci", oci = { registry = "ghcr.io", namespacePrefix = "public-software/" } } }

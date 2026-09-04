@@ -1,0 +1,27 @@
+package public:core@0.1.0;
+
+/// Leveled log output, provided by the host. The shape of the Rust `log`
+/// crate and of `wasi:logging`: a level, a target, one line.
+@since(version = 0.1.0)
+interface logging {
+    /// Severity, in increasing order.
+    @since(version = 0.1.0)
+    enum level {
+        trace,
+        debug,
+        info,
+        warn,
+        error,
+    }
+
+    /// Whether the host would record a message at `level` for `target`; a
+    /// component asks before formatting an expensive message.
+    @since(version = 0.1.0)
+    enabled: func(level: level, target: string) -> bool;
+
+    /// Record one message. `target` names the module or subsystem, as the
+    /// Rust `log` crate's target does; `message` is one line without a
+    /// trailing newline.
+    @since(version = 0.1.0)
+    log: func(level: level, target: string, message: string);
+}

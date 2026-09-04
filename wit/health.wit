@@ -1,0 +1,30 @@
+package public:core@0.1.0;
+
+/// Liveness and readiness, answered by the component. The host calls `check`
+/// on a schedule and on demand; a component that does not answer within the
+/// host's deadline counts as `failing`.
+@since(version = 0.1.0)
+interface health {
+    /// The three states every orchestrator understands.
+    @since(version = 0.1.0)
+    enum state {
+        /// Serving.
+        ok,
+        /// Serving with reduced function; `detail` says what is missing.
+        degraded,
+        /// Not serving; the host may restart the component.
+        failing,
+    }
+
+    /// One answer to a health check.
+    @since(version = 0.1.0)
+    record report {
+        state: state,
+        /// One line for an operator or an agent; empty when `ok`.
+        detail: string,
+    }
+
+    /// Answer the health check.
+    @since(version = 0.1.0)
+    check: func() -> report;
+}

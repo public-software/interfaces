@@ -1,0 +1,25 @@
+package public:core@0.1.0;
+
+/// Configuration, provided by the host. The shape of `wasi:config`: string
+/// keys, string values, and the host decides where they come from (the
+/// environment, a file, a store). Keys are dot-separated lowercase paths
+/// (`store.url`).
+@since(version = 0.1.0)
+interface config {
+    /// Why a key could not be read.
+    @since(version = 0.1.0)
+    variant error {
+        /// The store behind the host is unreachable; the message names it.
+        upstream(string),
+        /// The key or the stored value violates the host's schema.
+        invalid(string),
+    }
+
+    /// The value of one key, `none` when the key is unset.
+    @since(version = 0.1.0)
+    get: func(key: string) -> result<option<string>, error>;
+
+    /// Every key the component may read, with its value.
+    @since(version = 0.1.0)
+    get-all: func() -> result<list<tuple<string, string>>, error>;
+}

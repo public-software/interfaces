@@ -1,3 +1,5 @@
 /target
 /.work
 Cargo.lock.bak
+/wit/deps/
+*.wasm
