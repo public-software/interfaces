@@ -14,6 +14,7 @@ Planned components: public:doc/* · ui/* · plugin/* · identity/* · store/* ·
 ## In 30 seconds
 
 ```sh
+printf '[namespace_registries]\npublic = "publicsoftware.dev"\n' >> ~/.config/wasm-pkg/config.toml   # once per machine: the namespace's domain
 wkg get public:core@0.1.0             # the package as a WIT file, from ghcr.io/public-software/public/core:0.1.0
 wkg wit fetch && wasm-tools component wit wit/  # in this checkout: the WASI packages it imports, then the resolved package
 ```
@@ -26,7 +27,7 @@ wkg wit fetch && wasm-tools component wit wit/  # in this checkout: the WASI pac
 |---|---|---|---|
 | `public:core@0.1.0` (`wit/`) | `health` (exported), `logging`, `config`, `clock` | `imports`, `component` | `wasi:cli@0.3.0`, `wasi:clocks@0.3.0` |
 
-Every item carries `@since(version = …)`, the release that added it. `wit.yml` fetches the WASI packages, parses the package with wasm-tools and builds it with wkg on every change; the tag `core-v<version>` publishes it to `ghcr.io/public-software/public/core:<version>` with a build provenance attestation. The rules, semver per package, the tag and the OCI reference, are [RFC-0002](https://github.com/public-software/rfcs/blob/main/text/0002-wit-package-versioning.md); `https://publicsoftware.dev/.well-known/wasm-pkg/registry.json` maps the `public` namespace so `wkg get` needs no configuration.
+Every item carries `@since(version = …)`, the release that added it. `wit.yml` fetches the WASI packages, parses the package with wasm-tools and builds it with wkg on every change; the tag `core-v<version>` publishes it to `ghcr.io/public-software/public/core:<version>` with a build provenance attestation. The rules, semver per package, the tag and the OCI reference, are [RFC-0002](https://github.com/public-software/rfcs/blob/main/text/0002-wit-package-versioning.md); a consumer maps the `public` namespace to `publicsoftware.dev` once (the line above; wkg reads a well-known file only for a namespace it knows the domain of) and `https://publicsoftware.dev/.well-known/wasm-pkg/registry.json` says where the packages live, so `wkg get` needs nothing else.
 
 ## What it does not do (yet)
 
